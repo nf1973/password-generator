@@ -45,7 +45,7 @@ export default function Home() {
       <nav className="navbar navbar-expand navbar-dark bg-dark">
         <div className="Container">
           <a href="#" className="navbar-brand ps-3">
-            Simple Password Generator
+            Strong Password Generator
           </a>
         </div>
       </nav>
@@ -53,10 +53,10 @@ export default function Home() {
         <div className="row">
           <div className="col-md-8 offset-md-2 text-center">
             <p className="lead">
-              This simple password generator will generate a strong password, 20
+              A simple password generator will generate a strong password, 20
               characters long.
               <br /> Click the left button to create the password, and the right
-              button to copy to your clipboard
+              button to copy to your clipboard.
             </p>
             <div className="fs-5 my-4 border border-1 rounded">
               {password ? (
