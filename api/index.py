@@ -1,9 +1,18 @@
 from flask import Flask
+import string
+import secrets
+
+def generate_password(length):
+    alphabet = string.ascii_letters + string.digits + "!$%&()+*#-_.,;"
+    password = ''.join(secrets.choice(alphabet) for i in range(length))
+    return {"password": password}
+
+
 app = Flask(__name__)
 
-@app.route('/api/hello', methods=['GET'])
+@app.route('/api/getpassword', methods=['GET'])
 def hello_world():
-    return "Hello, World!"
+    return generate_password(24)
 
 
 @app.route('/api/neil', methods=['GET'])

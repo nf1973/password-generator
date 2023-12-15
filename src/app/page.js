@@ -1,95 +1,98 @@
-import Image from 'next/image'
-import styles from './page.module.css'
+"use client";
+
+import { useState, useCallback } from "react";
+import clipboardCopy from "clipboard-copy";
+
+function getPassword(setPassword) {
+  const apiUrl = "/api/getpassword";
+  // Making a GET request to the API
+  fetch(apiUrl)
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+      return response.json();
+    })
+    .then((data) => {
+      // Handle the data from the API
+      setPassword(data.password);
+      return data;
+    })
+    .catch((error) => {
+      // Handle errors during the API call
+      console.error("Error during API call:", error.message);
+    });
+}
 
 export default function Home() {
+  const [password, setPassword] = useState("");
+  const getPasswordCallback = useCallback(
+    () => getPassword(setPassword),
+    [setPassword]
+  );
+
+  const copyToClipboard = () => {
+    if (password) {
+      clipboardCopy(password).catch((error) =>
+        console.error("Error copying to clipboard:", error)
+      );
+    }
+  };
+
   return (
-    <main className={styles.main}>
-      <div className={styles.description}>
-        <p>
-          Get started by editing&nbsp;
-          <code className={styles.code}>src/app/page.js</code>
-        </p>
-        <div>
-          <a
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+    <div className="container my-5">
+      <div className="row">
+        <div className="col-md-8 offset-md-2 text-center">
+          <h1 className="mb-4">Simple Password Generator</h1>
+          <p className="display-7 my-4">
+            {password ? (
+              <p className="display-9 my-4">{password}</p>
+            ) : (
+              <span>&nbsp;</span>
+              // or simply use {null} if you prefer no space
+            )}
+          </p>
+          <button
+            className={`btn mx-2 ${password ? "btn-secondary" : "btn-primary"}`}
+            onClick={getPasswordCallback}
           >
-            By{' '}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className={styles.vercelLogo}
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
+            Generate Password
+          </button>
+          <button
+            className={`btn mx-2 ${password ? "btn-primary" : "btn-secondary"}`}
+            onClick={password ? copyToClipboard : null}
+            disabled={!password}
+          >
+            Copy to Clipboard
+          </button>
+          <p className="mt-4">Created with ❤ in Next.js and Python</p>
         </div>
       </div>
+    </div>
 
-      <div className={styles.center}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-      </div>
-
-      <div className={styles.grid}>
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Docs <span>-&gt;</span>
-          </h2>
-          <p>Find in-depth information about Next.js features and API.</p>
-        </a>
-
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Learn <span>-&gt;</span>
-          </h2>
-          <p>Learn about Next.js in an interactive course with&nbsp;quizzes!</p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Templates <span>-&gt;</span>
-          </h2>
-          <p>Explore starter templates for Next.js.</p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Deploy <span>-&gt;</span>
-          </h2>
-          <p>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
-    </main>
-  )
+    // <div className="container">
+    //   <div className="row">
+    //     <div className="col-md-12 text-center">
+    //       <h1>Simple Password Generator</h1>
+    //       <h2>Generate a Strong Password</h2>
+    //       <p className="display-5">{password}</p>
+    //       <button
+    //         className="btn btn-primary mx-2"
+    //         onClick={getPasswordCallback}
+    //       >
+    //         Generate Password
+    //       </button>
+    //       {password && (
+    //         <button
+    //           className="btn btn-secondary mx-2"
+    //           onClick={copyToClipboard}
+    //         >
+    //           Copy to Clipboard
+    //         </button>
+    //       )}
+    //       <p>Created with ❤ in Next.js and Python</p>
+    //     </div>
+    //   </div>
+    // </div>
+  );
 }
