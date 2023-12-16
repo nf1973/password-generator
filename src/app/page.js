@@ -3,6 +3,8 @@
 import { useState, useCallback } from "react";
 import clipboardCopy from "clipboard-copy";
 import { Container } from "react-bootstrap";
+import showcaseImage from "@/app/img/showcase.svg";
+import Image from "next/image";
 
 function getPassword(setPassword) {
   const apiUrl = "/api/getpassword";
@@ -42,82 +44,106 @@ export default function Home() {
   };
   return (
     <div>
-      <nav className="navbar navbar-expand navbar-dark bg-dark">
-        <div className="Container">
-          <a href="#" className="navbar-brand ps-3">
+      <nav className="navbar navbar-expand-lg bg-dark navbar-dark py-3 fixed-top">
+        <div className="container">
+          <a href="" className="navbar-brand">
             Strong Password Generator
           </a>
-        </div>
-      </nav>
-      <div className="container my-5">
-        <div className="row">
-          <div className="col-md-8 offset-md-2 text-center">
-            <p className="lead">
-              A simple password generator will generate a strong password, 20
-              characters long.
-              <br /> Click the left button to create the password, and the right
-              button to copy to your clipboard.
-            </p>
-            <div className="fs-5 my-4 border border-1 rounded">
-              {password ? (
-                <p className="py-4 mb-0 fw-bold">{password}</p>
-              ) : (
-                <p className="py-4 mb-0 fw-lighter fst-italic">
-                  Click the button below
-                </p>
-              )}
-            </div>
-            <button
-              className={`btn mx-2 ${
-                password ? "btn-secondary" : "btn-primary"
-              }`}
-              onClick={getPasswordCallback}
-            >
-              Generate Password
-            </button>
-            <button
-              className={`btn mx-2 ${
-                password ? "btn-primary" : "btn-secondary"
-              }`}
-              onClick={password ? copyToClipboard : null}
-              disabled={!password}
-            >
-              Copy to Clipboard
-            </button>
-            <p className="mt-4">Created with ❤ in Next.js and Python</p>
+          <button
+            className="navbar-toggler"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#navmenu"
+          >
+            <span className="navbar-toggler-icon"></span>
+          </button>
+          <div className="collapse navbar-collapse" id="navmenu">
+            <ul className="navbar-nav ms-auto">
+              <li className="nav-item">
+                <a
+                  href="https://github.com/nf1973/password-generator"
+                  className="nav-link"
+                  target="_blank"
+                >
+                  Github
+                </a>
+              </li>
+            </ul>
           </div>
         </div>
-      </div>
-    </div>
+      </nav>
 
-    /* <div className="container my-5">
-<div className="row">
-  <div className="col-md-8 offset-md-2 text-center">
-    <h1 className="mb-4">Simple Password Generator</h1>
-    <p className="display-7 my-4">
-      {password ? (
-        <p className="display-9 my-4">{password}</p>
-      ) : (
-        <span>&nbsp;</span>
-        // or simply use {null} if you prefer no space
-      )}
-    </p>
-    <button
-      className={`btn mx-2 ${password ? "btn-secondary" : "btn-primary"}`}
-      onClick={getPasswordCallback}
-    >
-      Generate Password
-    </button>
-    <button
-      className={`btn mx-2 ${password ? "btn-primary" : "btn-secondary"}`}
-      onClick={password ? copyToClipboard : null}
-      disabled={!password}
-    >
-      Copy to Clipboard
-    </button>
-    <p className="mt-4">Created with ❤ in Next.js and Python</p>
-  </div>
-</div>
-</div> */
+      <section className="bg-dark text-light p-5 p-lg-0 pt-lg-5 text-center text-sm-start">
+        <div className="container">
+          <div className="d-sm-flex align-items-center justify-content-between">
+            <div>
+              <h1>
+                Generate a <span className="text-warning">Strong Password</span>
+              </h1>
+              <p className="lead my-4">
+                Click the button to generate a 20 character long strong
+                password, then copy to your clipboard!
+              </p>
+
+              <button
+                className={`btn ${
+                  password ? "btn-secondary text-gray" : "btn-primary"
+                } btn-lg my-3 me-3`}
+                data-bs-toggle="modal"
+                data-bs-target="#enrol"
+                onClick={getPasswordCallback}
+              >
+                Generate Password
+              </button>
+
+              <button
+                className={`btn ${
+                  !password ? "btn-secondary text-gray" : "btn-primary"
+                } btn-lg my-3 me-3`}
+                data-bs-toggle="modal"
+                data-bs-target="#enrol"
+                onClick={copyToClipboard}
+              >
+                Copy to Clipboard
+              </button>
+
+              <div className="fs-5 my-4 border border-1 rounded">
+                {password ? (
+                  <p className="py-4 text-center mb-0 fw-bold">{password}</p>
+                ) : (
+                  <p className="py-4 mb-0 text-dark">&nbsp;</p>
+                )}
+              </div>
+            </div>
+            <Image
+              className="img img-fluid d-none d-sm-block w-30 "
+              src={showcaseImage}
+              alt=""
+            />
+          </div>
+        </div>
+      </section>
+
+      <section className="text-center">
+        <div className="container">
+          <p className="m-4 p-6 text-center">
+            Created by Neil with <span className="text-danger">❤</span> with{" "}
+            <a href="https://getbootstrap.com/" target="_blank">
+              Bootstrap
+            </a>
+            <span> </span>
+            in{" "}
+            <a href="https://nextjs.org/" target="_blank">
+              Next.js
+            </a>
+            <span> </span> and{" "}
+            <a href="https://python.org/" target="_blank">
+              Python
+            </a>
+            <span> </span>
+          </p>
+        </div>
+      </section>
+    </div>
   );
 }
